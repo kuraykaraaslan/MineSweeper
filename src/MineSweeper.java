@@ -469,8 +469,8 @@ public class MineSweeper {
             System.out.println("--------------------");
             System.out.println("1. Set the board size");
             System.out.println("2. Set the control mode");
-            System.out.println("3. Set the music");
-            System.out.println("4. Set the sound");
+            System.out.println("3. Set the music (not implemented yet)");
+            System.out.println("4. Set the sound (not implemented yet)");
             System.out.println("5. Set the difficulty");
             System.out.println("6. Main menu");
             System.out.println("--------------------");
