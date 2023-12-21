@@ -1,17 +1,22 @@
-import java.io.IOException;
 import java.util.Scanner;
-import java.lang.*;
 
-public class Main {
+/*
+ * This is a mine sweeper game
+ * Created by Kuray Karaaslan
+ * This game is created for patika+ Cohort
+ * Originally, this game is created by Microsoft
+ */
+
+public class MineSweeper {
 
     // Set the console size
     public static int SETTINGS_CONSOLE_SIZE = 30;
 
     // Set Settings
-    public static int SETTINGS_CONTROL_MODE = 0; // 0: WASD, 1: Coordinates
+    public static int SETTINGS_CONTROL_MODE = -1; // 0: WASD, 1: Coordinates
     public static int SETTINGS_MUSIC = 0; // 0: Off, 1: On
     public static int SETTINGS_SOUND = 0; // 0: Off, 1: On
-    public static int SETTINGS_DIFFICULTY = 1; // 0: Easy, 1: Medium, 2: Hard
+    public static int SETTINGS_DIFFICULTY = -1; // 0: Easy, 1: Medium, 2: Hard
 
     // User Scores
     public static int SCORES_WIN = 0;
@@ -19,40 +24,13 @@ public class Main {
     public static int SCORES_TOTAL = 0;
 
     // Set Board Size
-    public static int BOARD_SIZE_ROW = 4;
-    public static int BOARD_SIZE_COL = 4;
-
-    // First Time
-    public static boolean FIRST_TIME = true;
-
-    public static boolean _setConsoleSize(int consoleSize) {
-        // a code will be added here to get the console size
-        // for now, it will return the default value
-        return true;
-    }
-
-    public static boolean _setControlMode(int controlMode) {
-        // a code will be added here to set the control mode
-        // for now, it will return the default value
-        return true;
-    }
-
-    public static boolean _setMusic(int music) {
-        // a code will be added here to set the music
-        // for now, it will return the default value
-        return true;
-    }
-
-    public static boolean _setSound(int sound) {
-        // a code will be added here to set the sound
-        // for now, it will return the default value
-        return true;
-    }
+    public static int BOARD_SIZE_ROW = -1;
+    public static int BOARD_SIZE_COL = -1;
 
     public static void clrscr() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        wait(1);
+        //wait(1);
     }
 
     public static void wait(int seconds) {
@@ -64,25 +42,34 @@ public class Main {
         }
     }
 
+    // Create a scanner
     public static Scanner scanner = new Scanner(System.in);
 
+    // Main
     public static void main(String[] args) {
 
         // Clear the console
         clrscr();
 
         // Print the ASCII art
-        String asciiArt = "   _____  .__                _________          \n" +
-                "  /     \\ |__| ____   ____  /   _____/_  _  __ ____   ____ ______   ___________ \n" +
-                " /  \\ /  \\|  |/    \\_/ __ \\ \\_____  \\\\ \\/ \\/ // __ \\_/ __ \\\\____ \\_/ __ \\_  __ \\\n" +
-                "/    Y    \\  |   |  \\  ___/ /        \\\\     /\\  ___/\\  ___/|  |_> >  ___/|  | \\/\n" +
-                "\\____|__  /__|___|  /\\___  >_______  / \\/\\_/  \\___  >\\___  >   __/ \\___  >__|   \n" +
-                "        \\/        \\/     \\/        \\/             \\/     \\/|__|        \\/       ";
+        String[] asciiArt = {
+                "\033[31m",
+                "   _____  .__                _________          ",
+                "  /     \\ |__| ____   ____  /   _____/_  _  __ ____   ____ ______   ___________ ",
+                " /  \\ /  \\|  |/    \\_/ __ \\ \\_____  \\\\ \\/ \\/ // __ \\_/ __ \\\\____ \\/ __ \\_  __ \\",
+                "/    Y    \\  |   |  \\  ___/ /        \\\\     /\\  ___/\\  ___/|  |_> >  ___/|  | \\/",
+                "\\____|__  /__|___|  /\\___  >_______  / \\/\\_/  \\___  >\\___  >   __/ \\___  >__|   ",
+                "        \\/        \\/     \\/        \\/             \\/     \\/|__|        \\/       ",
+                "\033[0m"
+        };
 
-        System.out.println(asciiArt);
+        for (String line : asciiArt) {
+            System.out.println(line);
+        }
 
         // Print the credits
         String[] credits = {
+                "",
                 "Created by: Kuray Karaaslan",
                 "This game is created for patika+ Cohort"
         };
@@ -103,22 +90,25 @@ public class Main {
 
             // Print the scores if there is any
             // If there is no score, print welcome message
-            if (SCORES_TOTAL > 0) {
-                System.out.println(
-                        "Your score is: win: " + SCORES_WIN + " lose: " + SCORES_LOSE + " total: " + SCORES_TOTAL);
-            } else {
-                System.out.println("Welcome to the game!");
-            }
+
+            System.out.println(SCORES_TOTAL > 0
+                    ? "Your score is: win: " + SCORES_WIN + " lose: " + SCORES_LOSE + " total: " + SCORES_TOTAL
+                    : "Welcome to the game!");
 
             // Print the menu
-            System.out.println("--------------------");
-            System.out.println("1. Start the game");
-            System.out.println("2. Settings");
-            System.out.println("3. Tutorial");
-            System.out.println("4. Credits");
-            System.out.println("5. Exit");
-            System.out.println("--------------------");
-            System.out.flush();
+            String[] menuItems = {
+                    "--------------------",
+                    "1. Start the game",
+                    "2. Settings",
+                    "3. Tutorial",
+                    "4. Credits",
+                    "5. Exit",
+                    "--------------------"
+            };
+
+            for (String menuItem : menuItems) {
+                System.out.println(menuItem);
+            }
 
             // Get the input
             try {
@@ -128,6 +118,10 @@ public class Main {
                     case 1:
                         // Clear the console
                         clrscr();
+                        // Start the game
+
+                        // INITIALIZE THE GAME
+                        initialize();
 
                         int temp = startGame();
                         // game status: win, lose, exit
@@ -164,17 +158,18 @@ public class Main {
                         break;
 
                     case 5:
+                        clrscr();
                         System.out.println("Goodbye!");
                         wait(3);
                         return;
 
                     default:
-                        System.out.println("Menu item not found!");
+                        System.out.println("Menu item not found: " + input);
                         break;
                 }
 
             } catch (Exception e) {
-                System.out.println("Menu item not found!");
+                System.out.println("Invalid input: " + e);
             }
         }
     }
@@ -182,18 +177,18 @@ public class Main {
     // Game
     public static int startGame() {
 
-        // Set the game variables
-        int status = -1;
-        int col, row, boardSize, difficulty, mineCount = 1;
         int controlMode = SETTINGS_CONTROL_MODE;
+        int row = BOARD_SIZE_ROW;
+        int col = BOARD_SIZE_COL;
+        int difficulty = SETTINGS_DIFFICULTY;
+        int boardSize = row * col;
 
-        row = BOARD_SIZE_ROW;
-        col = BOARD_SIZE_COL;
-        difficulty = SETTINGS_DIFFICULTY;
-        boardSize = row * col;
+        // Set the game status
+        // -1: exit, 0: lose, 1: win, 2: continue
+        int status = 2;
 
-        int[][] minePositions = new int[row][col];
-        int[][] clickedPositions = new int[row][col];
+        int[][] minePositions = new int[BOARD_SIZE_ROW][BOARD_SIZE_COL];
+        int[][] clickedPositions = new int[BOARD_SIZE_ROW][BOARD_SIZE_COL];
         int clickedCount = 0;
 
         // set all the clicked positions to 0
@@ -210,24 +205,26 @@ public class Main {
         // if the difficulty is medium, set 1/5 of the board as mine, min 2
         // if the difficulty is hard, set 1/3 of the board as mine, min 3
 
+        int mineCount = 0;
+
         if (difficulty == 0) {
             mineCount = (int) Math.floor(boardSize / 8);
-            if (mineCount < 1) {
-                mineCount = 1;
-            }
         } else if (difficulty == 1) {
             mineCount = (int) Math.floor(boardSize / 5);
-            if (mineCount < 2) {
-                mineCount = 2;
-            }
         } else if (difficulty == 2) {
             mineCount = (int) Math.floor(boardSize / 3);
-            if (mineCount < 3) {
-                mineCount = 3;
-            }
+        } else {
+            // make the difficulty medium
+            SETTINGS_DIFFICULTY = 1;
+            mineCount = (int) Math.floor(boardSize / 5);
         }
 
-        Screen screen = new Screen(row, col, SETTINGS_CONSOLE_SIZE);
+        // make the mine count at least 1
+        if (mineCount < 1) {
+            mineCount = 1;
+        }
+
+        Screen screen = new Screen(BOARD_SIZE_ROW, BOARD_SIZE_COL);
 
         int localedMineCount = 0;
 
@@ -334,100 +331,126 @@ public class Main {
                 case 1:
                     System.out.println("Enter the coordinates to click (row:col) or Q to exit: then press enter");
                     break;
+                default:
+                    // make the control mode WASD
+                    SETTINGS_CONTROL_MODE = 0;
+                    controlMode = 0;
+                    System.out.println("W: Up, S: Down, A: Left, D: Right, X: Click, Q: Exit: then press enter");
+                    break;
             }
 
-            char input = ' ';
-            try {
-                input = (char) System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String input;
+
+            input = scanner.nextLine();
 
             // make the input lowercase
-            input = Character.toLowerCase(input);
+
+            input = input.toLowerCase();
 
             // Get the user input by the control mode
 
             if (controlMode == 0) {
-                if (input == 'q') {
+                if (input.equals("q"))
                     break;
-                } else if (input == 'w') {
-                    screen.goUp();
-                } else if (input == 's') {
-                    screen.goDown();
-                } else if (input == 'a') {
-                    screen.goLeft();
-                } else if (input == 'd') {
-                    screen.goRight();
-                } else if (input == 'x') {
-                    int[] userCoordinates = screen.getUserCoordinates();
-                    int pixelVal = screen.getPixel(userCoordinates[0], userCoordinates[1]);
+            } else if (input.equals("w")) {
+                // W key for UP
+                screen.goUp();
+            } else if (input.equals("s")) {
+                // S key for DOWN
+                screen.goDown();
+            } else if (input.equals("a")) {
+                // A key for LEFT
+                screen.goLeft();
+            } else if (input.equals("d")) {
+                // D key for RIGHT
+                screen.goRight();
+            } else if (input.equals("x")) {
+                // X key for CLICK
+                int[] userCoordinates = screen.getUserCoordinates();
+                int pixelVal = screen.getPixel(userCoordinates[0], userCoordinates[1]);
 
-                    if (clickedPositions[userCoordinates[0]][userCoordinates[1]] == 1) {
-                        System.out.println("This pixel is already clicked!");
-                        System.out.println("Press any key to continue...");
-                        scanner.nextLine();
-                        continue;
-                    }
-
-                    if (pixelVal == -1) {
-                        screen.explode(userCoordinates[0], userCoordinates[1]);
-                        System.out.println("You lost! Game over!");
-                        System.out.println("Press any key to continue...");
-                        scanner.nextLine();
-                        status = 0;
-                        break;
-                    } else {
-                        screen.revealPixel(userCoordinates[0], userCoordinates[1]);
-                        clickedCount++;
-                    }
+                if (clickedPositions[userCoordinates[0]][userCoordinates[1]] == 1) {
+                    System.out.println("This pixel is already clicked!");
+                    System.out.println("Press any key to continue...");
+                    scanner.nextLine();
+                    continue;
                 }
 
-            } else if (controlMode == 1) {
-                if (input == 'q') {
+                if (pixelVal == -1) {
+                    screen.explode(userCoordinates[0], userCoordinates[1]);
+                    System.out.println("You lost! Game over!");
+                    System.out.println("Press any key to continue...");
+                    scanner.nextLine();
+                    status = 0;
                     break;
                 } else {
+                    screen.revealPixel(userCoordinates[0], userCoordinates[1]);
+                    clickedCount++;
+                }
+            } else if (controlMode == 1) {
+                if (input.equals("q")) {
+                    break;
+                }
+
+                else {
+
+                    String[] coordinates = new String[2];
+
+                    String dividedBy = "";
+
                     int x = -1;
                     int y = -1;
 
-                    String[] coordinates;
+                    // User input can be divided by : or , or space
 
-                    if (scanner.nextLine().split(":", 2).length == 2) {
-                        coordinates = scanner.nextLine().split(":", 2);
-                    } else if (scanner.nextLine().split(",", 2).length == 2) {
-                        coordinates = scanner.nextLine().split(",", 2);
-                    } else if (scanner.nextLine().split(" ", 2).length == 2) {
-                        coordinates = scanner.nextLine().split(" ", 2);
+                    if (input.contains(":")) {
+                        dividedBy = ":";
+                    } else if (input.contains(",")) {
+                        dividedBy = ",";
+                    } else if (input.contains(" ")) {
+                        dividedBy = " ";
                     } else {
-                        System.out.println("Invalid coordinates");
-                        continue;
+                        System.out.println("Invalid input!");
+                        wait(1);
+                    }
+
+                    coordinates = input.split(dividedBy);
+
+                    try {
+                        x = Integer.parseInt(coordinates[0]);
+                        y = Integer.parseInt(coordinates[1]);
+                    } catch (Exception e) {
+                        System.out.println("Invalid input!");
+                        wait(1);
                     }
 
                     if (x < 0 || x >= row || y < 0 || y >= col) {
-                        System.out.println("Invalid coordinates");
-                        continue;
-                    }
-
-                    if (clickedPositions[x][y] == 1) {
-                        System.out.println("This pixel is already clicked!");
-                        System.out.println("Press any key to continue...");
-                        scanner.nextLine();
-                        continue;
-                    }
-
-                    int pixelVal = screen.getPixel(x, y);
-
-                    if (pixelVal == -1) {
-                        screen.explode(x, y);
-                        System.out.println("You lost! Game over!");
-                        System.out.println("Press any key to continue...");
-                        scanner.nextLine();
-                        status = 0;
-                        break;
+                        System.out.println("Invalid coordinates!");
+                        wait(1);
                     } else {
-                        screen.revealPixel(x, y);
-                        clickedCount++;
+                        screen.setUserCoordinates(x, y);
+                        int pixelVal = screen.getPixel(x, y);
+
+                        if (clickedPositions[x][y] == 1) {
+                            System.out.println("This pixel is already clicked!");
+                            System.out.println("Press any key to continue...");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        if (pixelVal == -1) {
+                            screen.explode(x, y);
+                            System.out.println("You lost! Game over!");
+                            System.out.println("Press any key to continue...");
+                            scanner.nextLine();
+                            status = 0;
+                            break;
+                        } else {
+                            screen.revealPixel(x, y);
+                            clickedCount++;
+                        }
                     }
+
                 }
             }
         }
@@ -520,7 +543,10 @@ public class Main {
                             break;
                         }
                     }
+                } else {
+                    continue;
                 }
+
             } else if (menuItem.equals("3")) {
                 // Clear the console
                 clrscr();
@@ -679,6 +705,88 @@ public class Main {
             // Get the input
             scanner.nextLine();
         }
+    }
+
+    // first time run
+    public static void initialize() {
+        // Clear the console
+        clrscr();
+
+        // Print the menu
+        if (BOARD_SIZE_ROW == -1) {
+            while (true) {
+                int row;
+                System.out.println("Enter the number of rows: (minimum 2)");
+                try {
+                    row = Integer.parseInt(scanner.nextLine());
+                } catch (Exception e) {
+                    row = 0;
+                    continue;
+                }
+                if (row < 2) {
+                    System.out.println("Invalid input! Please enter a positive integer (minimum 2)");
+                } else {
+                    BOARD_SIZE_ROW = row;
+                    break;
+                }
+            }
+        }
+
+        if (BOARD_SIZE_COL == -1) {
+            while (true) {
+                int col;
+                System.out.println("Enter the number of cols: (minimum 2)");
+                try {
+                    col = Integer.parseInt(scanner.nextLine());
+                } catch (Exception e) {
+                    col = 0;
+                    continue;
+                }
+                if (col < 2) {
+                    System.out.println("Invalid input! Please enter a positive integer (minimum 2)");
+                } else {
+                    BOARD_SIZE_COL = col;
+                    break;
+                }
+            }
+        }
+
+        if (SETTINGS_CONTROL_MODE == -1) {
+            while (true) {
+                int controlMode;
+                System.out.println("Enter the control mode: 0: WASD, 1: Coordinates");
+                try {
+                    controlMode = Integer.parseInt(scanner.nextLine());
+                    if (controlMode < 0 || controlMode > 1) {
+                        System.out.println("Invalid input! Please enter 0 or 1");
+                    } else {
+                        SETTINGS_CONTROL_MODE = controlMode;
+                        break;
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+
+        if (SETTINGS_DIFFICULTY == -1) {
+            while (true) {
+                int difficulty;
+                System.out.println("Enter the difficulty: 0: Easy, 1: Medium, 2: Hard");
+                try {
+                    difficulty = Integer.parseInt(scanner.nextLine());
+                    if (difficulty < 0 || difficulty > 2) {
+                        System.out.println("Invalid input! Please enter 0, 1 or 2");
+                    } else {
+                        SETTINGS_DIFFICULTY = difficulty;
+                        break;
+                    }
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+
     }
 
 }

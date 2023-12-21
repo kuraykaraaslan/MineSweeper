@@ -1,7 +1,8 @@
-import java.awt.Color;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import java.io.Console;
+/*
+ * Screen.java
+ * This class is used to render the screen and store the values of the pixels
+ * 
+ */
 
 public class Screen {
     // Default values for row and col are 4
@@ -11,11 +12,11 @@ public class Screen {
     // 0-9: Pixel is on and has a mine in the surrounding area
 
     // Board size
-    int row = 4;
-    int col = 4;
-    int[][] pixels = new int[row][col];
+    int row;
+    int col;
+    int[][] pixels;
 
-    int[][] hiddenPixels = new int[row][col];
+    int[][] hiddenPixels;
 
     String renderMode = "normal"; // normal, system
 
@@ -43,16 +44,12 @@ public class Screen {
 
     boolean exploded = false;
 
-    public Screen(int row, int col) {
-        // Initialize the screen with all pixels off
-        clear();
-    }
 
-    public Screen(int row, int col, int consoleSize) {
+    public Screen(int row, int col) {
         this.row = row;
         this.col = col;
-        this.consoleSize = consoleSize;
-        pixels = new int[row][col];
+        this.pixels = new int[row][col];
+        this.hiddenPixels = new int[row][col];
         clear();
         hidePixels();
     }
@@ -204,7 +201,7 @@ public class Screen {
     public static void clrscr() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        // wait(1);
+        //wait(1);
     }
 
     public static void wait(int seconds) {
