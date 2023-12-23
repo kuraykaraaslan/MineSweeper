@@ -30,7 +30,7 @@ public class MineSweeper {
     public static void clrscr() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        //wait(1);
+        // wait(1);
     }
 
     public static void wait(int seconds) {
@@ -113,6 +113,7 @@ public class MineSweeper {
             // Get the input
             try {
                 int input = scanner.nextInt();
+                scanner.nextLine();
 
                 switch (input) {
                     case 1:
@@ -335,7 +336,7 @@ public class MineSweeper {
                     // make the control mode WASD
                     SETTINGS_CONTROL_MODE = 0;
                     controlMode = 0;
-                    System.out.println("W: Up, S: Down, A: Left, D: Right, X: Click, Q: Exit: then press enter");
+                    System.out.println("Control mode is not set! Setting to WASD");
                     break;
             }
 
@@ -350,49 +351,49 @@ public class MineSweeper {
             // Get the user input by the control mode
 
             if (controlMode == 0) {
-                if (input.equals("q"))
+                if (input.equals("q")) {
+                    status = -1;
                     break;
-            } else if (input.equals("w")) {
-                // W key for UP
-                screen.goUp();
-            } else if (input.equals("s")) {
-                // S key for DOWN
-                screen.goDown();
-            } else if (input.equals("a")) {
-                // A key for LEFT
-                screen.goLeft();
-            } else if (input.equals("d")) {
-                // D key for RIGHT
-                screen.goRight();
-            } else if (input.equals("x")) {
-                // X key for CLICK
-                int[] userCoordinates = screen.getUserCoordinates();
-                int pixelVal = screen.getPixel(userCoordinates[0], userCoordinates[1]);
+                } else if (input.equals("w")) {
+                    // W key for UP
+                    screen.goUp();
+                } else if (input.equals("s")) {
+                    // S key for DOWN
+                    screen.goDown();
+                } else if (input.equals("a")) {
+                    // A key for LEFT
+                    screen.goLeft();
+                } else if (input.equals("d")) {
+                    // D key for RIGHT
+                    screen.goRight();
+                } else if (input.equals("x")) {
+                    // X key for CLICK
+                    int[] userCoordinates = screen.getUserCoordinates();
+                    int pixelVal = screen.getPixel(userCoordinates[0], userCoordinates[1]);
 
-                if (clickedPositions[userCoordinates[0]][userCoordinates[1]] == 1) {
-                    System.out.println("This pixel is already clicked!");
-                    System.out.println("Press any key to continue...");
-                    scanner.nextLine();
-                    continue;
-                }
+                    if (clickedPositions[userCoordinates[0]][userCoordinates[1]] == 1) {
+                        System.out.println("This pixel is already clicked!");
+                        System.out.println("Press any key to continue...");
+                        scanner.nextLine();
+                        continue;
+                    }
 
-                if (pixelVal == -1) {
-                    screen.explode(userCoordinates[0], userCoordinates[1]);
-                    System.out.println("You lost! Game over!");
-                    System.out.println("Press any key to continue...");
-                    scanner.nextLine();
-                    status = 0;
-                    break;
-                } else {
-                    screen.revealPixel(userCoordinates[0], userCoordinates[1]);
-                    clickedCount++;
+                    if (pixelVal == -1) {
+                        screen.explode(userCoordinates[0], userCoordinates[1]);
+                        System.out.println("You lost! Game over!");
+                        System.out.println("Press any key to continue...");
+                        scanner.nextLine();
+                        status = 0;
+                        break;
+                    } else {
+                        screen.revealPixel(userCoordinates[0], userCoordinates[1]);
+                        clickedCount++;
+                    }
                 }
             } else if (controlMode == 1) {
                 if (input.equals("q")) {
                     break;
-                }
-
-                else {
+                } else {
 
                     String[] coordinates = new String[2];
 
