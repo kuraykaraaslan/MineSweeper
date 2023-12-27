@@ -211,13 +211,13 @@ public class MineSweeper {
         if (difficulty == 0) {
             mineCount = (int) Math.floor(boardSize / 8);
         } else if (difficulty == 1) {
-            mineCount = (int) Math.floor(boardSize / 5);
+            mineCount = (int) Math.floor(boardSize / 4);
         } else if (difficulty == 2) {
             mineCount = (int) Math.floor(boardSize / 3);
         } else {
             // make the difficulty medium
             SETTINGS_DIFFICULTY = 1;
-            mineCount = (int) Math.floor(boardSize / 5);
+            mineCount = (int) Math.floor(boardSize / 4);
         }
 
         // make the mine count at least 1
@@ -773,7 +773,7 @@ public class MineSweeper {
         if (SETTINGS_DIFFICULTY == -1) {
             while (true) {
                 int difficulty;
-                System.out.println("Enter the difficulty: 0: Easy, 1: Medium, 2: Hard");
+                System.out.println("Enter the difficulty: 0: Easy (1/8) , 1: Medium (1/4), 2: Hard (1/3)");
                 try {
                     difficulty = Integer.parseInt(scanner.nextLine());
                     if (difficulty < 0 || difficulty > 2) {
