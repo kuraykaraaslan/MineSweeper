@@ -448,6 +448,7 @@ public class MineSweeper {
                             break;
                         } else {
                             screen.revealPixel(x, y);
+                            clickedPositions[x][y] = 1;
                             clickedCount++;
                         }
                     }
